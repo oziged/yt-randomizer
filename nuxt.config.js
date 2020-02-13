@@ -34,6 +34,10 @@ module.exports = {
         })
       }
     }
+  },
+
+  env: {
+    YT_API_KEY: 'AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk'
   }
 }
 

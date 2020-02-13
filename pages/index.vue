@@ -8,6 +8,7 @@
 <script>
 import axios from 'axios'
 
+import Video from '../models/video'
 
 export default {
   data() {
@@ -23,21 +24,22 @@ export default {
       return `https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk&textFormat=plainText&part=snippet,replies&videoId=${link.split('?v=')[1].split('&')[0]}&maxResults=100`
     },
 
-    async fetchComments(link) {
-      let data = null;
-      await axios.get(link).then(response => {
-        data = response.data;
-        response.data.items.forEach(item => {
-          this.comments.push(item.snippet.topLevelComment.snippet.textOriginal)
-        })
-      })
-      if (data.nextPageToken) this.fetchComments(`${link}&pageToken=${data.nextPageToken}`)
-      else console.log(this.comments)
-    },
+    // async fetchComments(link) {
+    //   let data = null;
+    //   await axios.get(link).then(response => {
+    //     data = response.data;
+    //     response.data.items.forEach(item => {
+    //       this.comments.push(item.snippet.topLevelComment.snippet.textOriginal)
+    //     })
+    //   })
+    //   if (data.nextPageToken) this.fetchComments(`${link}&pageToken=${data.nextPageToken}`)
+    //   else console.log(this.comments)
+    // },
   },
 
   async mounted() {
-  
+    let vid = new Video(this.defaultLink)
+    vid.getVideoData()
   },
 }
 </script>
@@ -45,3 +47,4 @@ export default {
 <style>
 </style>
 
+// https://www.googleapis.com/youtube/v3/videos?part=snippet&id=ZaI2IlHwmgQ&key=AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk
