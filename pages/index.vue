@@ -1,7 +1,8 @@
 <template>
   <div>
     <input style="height: 100px; width: 100%; font-size: 40px" type="text" v-model="defaultLink">
-    <button style="font-size: 40px; cursor: pointer" @click="fetchComments(generateApiUrl(defaultLink))">get comments</button>
+    <button style="font-size: 40px; cursor: pointer" @click="parseVideoId(defaultLink); getVideoData()">get comments</button>
+    {{ allRepliesCount }} {{ allCommentsCount}}
   </div>
 </template>
 
@@ -13,33 +14,100 @@ import Video from '../models/video'
 export default {
   data() {
     return {
-      comments: [],
-      defaultLink: 'https://www.youtube.com/watch?v=pj6v3FwLvj8&t=30s'
+      a: {a: 1},
+      defaultLink: 'https://www.youtube.com/watch?v=JZi1SLJMWCk',
+      id: 'DIs8UBWxy4M',
+      comments: {},
+      replies: {},
+      test: 0
+    }
+  },
+
+
+  computed: {
+    commentsLength() {
+      return Object.values(this.comments).length
+    },
+
+    repliesLength() {
+      return Object.values(this.replies).length
+    },
+
+    allRepliesCount() {
+      let count = 0
+      Object.values(this.replies).forEach(item => {
+        count += item.length
+      })
+      return count;
+      // return Object.values(this.replies).length
+    },
+
+    allCommentsCount() {
+      let count = 0;
+      Object.values(this.comments).forEach(item => {
+        count += item.length
+      })
+      return count;
     }
   },
 
 
   methods: {
-    generateApiUrl(link) {
-      return `https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk&textFormat=plainText&part=snippet,replies&videoId=${link.split('?v=')[1].split('&')[0]}&maxResults=100`
+    async getVideoData() {
+      let res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${this.id}&key=${process.env.YT_API_KEY}`)
+      let data = res.data.items[0].snippet;
+      
+      Object.entries(data).forEach(array => {
+        this[array[0]] = array[1]
+      })
+
+      await this.getComments() 
     },
 
-    // async fetchComments(link) {
-    //   let data = null;
-    //   await axios.get(link).then(response => {
-    //     data = response.data;
-    //     response.data.items.forEach(item => {
-    //       this.comments.push(item.snippet.topLevelComment.snippet.textOriginal)
-    //     })
-    //   })
-    //   if (data.nextPageToken) this.fetchComments(`${link}&pageToken=${data.nextPageToken}`)
-    //   else console.log(this.comments)
-    // },
+    async getComments() { // to get all comments
+      this.comments = {}
+      this.replies = {}
+
+      getPageComments = getPageComments.bind(this)
+      await getPageComments()
+      
+      async function getPageComments(nextPageToken) {
+        let url = `https://www.googleapis.com/youtube/v3/commentThreads?key=${process.env.YT_API_KEY}&textFormat=plainText&part=snippet,replies&videoId=${this.id}&maxResults=100`
+        url = nextPageToken ? url + `&pageToken=${nextPageToken}` : url
+
+        await axios.get(url).then(async response => {
+          response.data.items.forEach(item => {
+            let comment = item.snippet.topLevelComment.snippet
+            let id = comment.authorChannelId.value
+            if (this.comments[id]) this.comments[id].push(comment)
+            else this.$set(this.comments, id, [comment])
+            if (item.replies) {
+              this.test += item.replies.comments.length
+              console.log(item.replies.comments)
+            }
+            if (item.replies) item.replies.comments.forEach(item => {
+              let comment = item.snippet
+              let id = comment.authorChannelId.value
+              if (this.replies[id]) this.replies[id].push(comment)
+              else this.$set(this.replies, id, [comment])
+            })
+          })
+
+          if (response.data.nextPageToken) await getPageComments(response.data.nextPageToken)
+        })
+      } 
+    },
+
+    parseVideoId(link) {
+      return link.split('?v=')[1].split('&')[0]
+    }
   },
 
   async mounted() {
-    let vid = new Video(this.defaultLink)
-    vid.getVideoData()
+    await this.getVideoData()
+    console.log(this.test)
+    // console.log(this.replies)
+    // console.log(this.comments)
   },
 }
 </script>
