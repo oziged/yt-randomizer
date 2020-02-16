@@ -1,16 +1,46 @@
+import axios from 'axios'
+
+
 export const state = () => ({
-  list: [],
-  title: '123'
+  fetched_data: {},
+  is_visible: false
 })
 
+
+export const getters = {
+  videoData(state) {
+    return {
+      ...state.fetched_data,
+      is_visible: state.is_visible
+    }
+  }
+}
+
+
+export const actions = {
+  async fetchVideo({ commit }, payload) {
+    let video = {
+      id: payload.id
+    }
+
+    let res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${video.id}&key=${process.env.YT_API_KEY}`)
+    video = {...video, ...res.data.items[0].snippet}
+      
+    commit('SET_VIDEO_DATA', video)
+  }
+}
+
+
 export const mutations = {
-  add (state, text) {
-    state.list.push({
-      text,
-      done: false
-    })
+  SET_VIDEO_DATA(state, payload) {
+    state.fetched_data = payload
   },
-  toggle (state, todo) {
-    todo.done = !todo.done
+
+  HIDE_VIDEO_BLOCK(state) {
+    state.is_visible = false
+  },
+
+  SHOW_VIDEO_BLOCK(state) {
+    state.is_visible = true
   }
 }
