@@ -1,7 +1,7 @@
 <template>
   <div style="height: 500px">
     <FilterList :filters="filters"/>
-    {{ commentsCount  }}
+    {{ filteredData.length  }}
     <ul>
       <li v-for="(item, index) in filteredData" :key="index">{{ item.textOriginal }}</li>
     </ul>
@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       filters: {
-        includeReplies: true,
+        includeReplies: false,
         oneCommentForAuthor: false,
         onlySAMPNicknames: false
       }    
@@ -30,48 +30,46 @@ export default {
 
   computed: {
     filteredData() {
-      let filteredArray = []
-      let comments = Object.values(this.$store.state.comments.comments)
-      let replies = Object.values(this.$store.state.comments.replies)
+      let filteredArray = JSON.parse(JSON.stringify(this.$store.state.comments.fetched_data))
 
-      comments = JSON.parse(JSON.stringify(comments))
-      replies = JSON.parse(JSON.stringify(replies))
-
-      if (!this.filters.oneCommentForAuthor) {
-        comments = comments.concat(updateForMultipleComments(comments))
-        replies = replies.concat(updateForMultipleComments(replies))
-        console.log(123, comments)
+      if (!this.filters.includeReplies) {
+        for (const [key, value] of Object.entries(filteredArray)) {
+          if (value.replies) {
+            delete filteredArray[key].replies
+            if (!value.comments) {
+              delete filteredArray[key]
+            }
+          }
+        }
       }
 
-      if (this.filters.includeReplies) filteredArray = comments.concat(replies)
-      else filteredArray = comments
+      if (this.filters.oneCommentForAuthor) {
+        for (const [key, value] of Object.entries(filteredArray)) {
+          if (value.comments) {
+            value.comments.splice(1)
+            delete filteredArray[key].replies
+          }
+          else value.replies.splice(1)
+        }
+      }
 
-      filteredArray = filteredArray.map(item => item[0])
+      let tempArr = []
 
+      Object.values(filteredArray).map(item => {
+        if (item.comments) item.comments.forEach(comment => {
+          tempArr.push(comment)
+        })  
+        if (item.replies) item.replies.forEach(reply => {
+          tempArr.push(reply)
+        })  
+      })
+
+      filteredArray = tempArr
+ 
       if (this.filters.onlySAMPNicknames) {
         filteredArray = filteredArray.filter(item => {
           return includesSAMPNickname(item.textOriginal)
         })
-      }
-
-      // console.log('- - - - DATA - - - -')
-      // console.log(filteredArray)
-      // filteredArray.forEach(item => console.log(item.textOriginal))
-      // console.log('- - - - DATA - - - -')
-
-      return filteredArray
-
-      function updateForMultipleComments(array) {
-        let multipliedComments = []
-
-        array.forEach(item => {
-          if (item.length > 1) {
-            let temp = item.splice(1).map(item => [item])
-            multipliedComments = multipliedComments.concat(temp)
-          }
-        })
-
-        return multipliedComments
       }
 
       function includesSAMPNickname(str) {
@@ -82,10 +80,8 @@ export default {
           return str.split('').every(char => char.toLowerCase() != char.toUpperCase())
         })
       }
-    },
 
-    commentsCount() {
-      return this.filteredData.length
+      return filteredArray
     }
 
 

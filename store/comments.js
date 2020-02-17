@@ -2,9 +2,7 @@ import axios from 'axios'
 
 
 export const state = () => ({
-  comments: {},
-  replies: {}, 
-  full_data: [], // comments + replies
+  fetched_data: {},
   is_visible: false
 })
 
@@ -15,8 +13,7 @@ export const getters = {
 
 export const actions = {
     async fetchComments({ commit }, payload) { // to get all comments
-      let comments = {}
-      let replies = {}
+      let res = {}
       let commentsCount = 0
       let repliesCount = 0
 
@@ -32,8 +29,9 @@ export const actions = {
             let item = response.data.items[i]
             let comment = item.snippet.topLevelComment.snippet
             let id = comment.authorChannelId.value
-            if (comments[id]) comments[id].push(comment)
-            else comments[id] = [comment]
+            if (!res[id]) res[id] = {}
+            if (res[id].comments) res[id].comments.push(comment)
+            else res[id].comments = [comment]
 
             if (item.replies) {
               let url = `https://www.googleapis.com/youtube/v3/comments?part=snippet,id&parentId=${item.id}&key=${process.env.YT_API_KEY}&maxResults=100&pageToken=`
@@ -42,8 +40,9 @@ export const actions = {
                   repliesCount++
                   let reply = item.snippet
                   let id = reply.authorChannelId.value
-                  if (replies[id]) replies[id].push(reply)
-                  else replies[id] = [reply]
+                  if (!res[id]) res[id] = {}
+                  if (res[id].replies) res[id].replies.push(reply)
+                  else res[id].replies = [reply]
                 })
               })
             }
@@ -52,16 +51,14 @@ export const actions = {
         })
       } 
 
-      commit('SET_COMMENTS', comments)
-      commit('SET_REPLIES', replies)
-      // commit('SET_FULL_DATA')
+      commit('SET_FETCHED_DATA', res)
     },
 }
 
 
 export const mutations = {
-  SET_COMMENTS(state, comments) {
-    state.comments = comments
+  SET_FETCHED_DATA(state, data) {
+    state.fetched_data = data
   },
 
   SET_REPLIES(state, replies) {
