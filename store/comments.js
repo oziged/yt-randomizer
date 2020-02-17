@@ -60,25 +60,4 @@ export const mutations = {
   SET_FETCHED_DATA(state, data) {
     state.fetched_data = data
   },
-
-  SET_REPLIES(state, replies) {
-    state.replies = replies
-  },
- 
-  SET_FULL_DATA(state, payload = {}) {
-    if (!payload.filters) {
-
-      let resArray = []
-
-      Object.values(state.comments).forEach(array => {
-        array.forEach(item => resArray.push(item))
-      })
-      Object.values(state.replies).forEach(array => {
-        array.forEach(item => resArray.push(item))
-      })
-
-      state.full_data = resArray
-      console.log(state.full_data)
-    }
-  },
 }

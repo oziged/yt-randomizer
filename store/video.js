@@ -26,13 +26,13 @@ export const actions = {
     let res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${video.id}&key=${process.env.YT_API_KEY}`)
     video = {...video, ...res.data.items[0].snippet}
       
-    commit('SET_VIDEO_DATA', video)
+    commit('SET_FETCHED_DATA', video)
   }
 }
 
 
 export const mutations = {
-  SET_VIDEO_DATA(state, payload) {
+  SET_FETCHED_DATA(state, payload) {
     state.fetched_data = payload
   },
 
