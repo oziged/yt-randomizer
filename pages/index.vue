@@ -1,10 +1,10 @@
 <template>
   <div>
-    <input style="height: 100px; width: 100%; font-size: 40px" type="text" v-model="videoURL">
+    <!-- <input style="height: 100px; width: 100%; font-size: 40px" type="text" v-model="videoURL">
     <button style="font-size: 40px; cursor: pointer" @click="fetchVideo">get video info</button>
     <button style="font-size: 40px; cursor: pointer" @click="fetchComments">get comments info</button>
     <VideoCard v-if="videoData.is_visible" />
-    <CommentsGrid />
+    <CommentsGrid /> -->
   </div>
 </template>
 

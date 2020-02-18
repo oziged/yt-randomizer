@@ -33,8 +33,10 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
   },
+  
+  css: ['~assets/main.scss'],
 
   env: {
     YT_API_KEY: 'AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk'
