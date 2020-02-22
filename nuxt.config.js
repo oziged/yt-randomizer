@@ -35,9 +35,14 @@ module.exports = {
       }
     },
   },
-  
-  css: ['~assets/main.scss'],
 
+  modules: ['@nuxtjs/style-resources'],
+  css: ['~assets/main.scss'],
+  styleResources: {
+    scss: [
+      '~assets/main.scss',
+    ]
+},
   env: {
     YT_API_KEY: 'AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk'
   }

@@ -1,9 +1,9 @@
 <template>
-  <header>
-    123321qasdasd
-    <span>test</span>
-    <h1>hello</h1>
-    <img src="~assets/img/yt-logo.svg">
+  <header class="header flex align-center">
+    <div class="logo flex">
+      <img src="~assets/img/yt-logo.svg">
+      <span>yt-random</span>
+    </div>
   </header>
 </template>
 
@@ -13,17 +13,18 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   header {
-    width: 50%;
-    height: 80px;
-    background-color: yellow;
-    font-family: Avenir; 
-    span {
-      font-family: Larsseit;
-    }
-    h1 {
-      font-family: Akkurat;
+    height: 70px;
+    padding: 0 25px;
+    .logo {
+      height: 25px;
+      font-family: Avenir;
+      font-size: 1.2em;
+      img {
+        height: 100%;
+        margin-right: 10px;
+      }
     }
   }
 </style>

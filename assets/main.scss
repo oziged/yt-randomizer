@@ -1,6 +1,13 @@
 @import './scss/fonts.scss';
+@import './scss/variables.scss';
+@import './scss/common.scss';
+@import './scss//normalize.scss';
 
 html, body, #__nuxt, #__layout {
   margin: 0;
   height: 100%;
+}
+
+body {
+
 }

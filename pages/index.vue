@@ -1,11 +1,10 @@
 <template>
-  <div>
+    <VideoCard />
     <!-- <input style="height: 100px; width: 100%; font-size: 40px" type="text" v-model="videoURL">
     <button style="font-size: 40px; cursor: pointer" @click="fetchVideo">get video info</button>
     <button style="font-size: 40px; cursor: pointer" @click="fetchComments">get comments info</button>
     <VideoCard v-if="videoData.is_visible" />
     <CommentsGrid /> -->
-  </div>
 </template>
 
 <script>
@@ -64,7 +63,8 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style lang="scss" scoped>
+  .main-container {
 
-// https://www.googleapis.com/youtube/v3/videos?part=snippet&id=ZaI2IlHwmgQ&key=AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk
+  }
+</style>
