@@ -35,7 +35,7 @@ module.exports = {
       }
     },
   },
-
+  plugins: ['~plugins/filters.js'],
   modules: ['@nuxtjs/style-resources'],
   css: ['~assets/main.scss'],
   styleResources: {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="filter-list">
     <label for="includeReplies">Include replies</label>
     <input type="checkbox" id="includeReplies" v-model="filters.includeReplies">
 

@@ -1,23 +1,32 @@
 <template>
-    <VideoCard />
+  <div class="main-wrapper">
+  <transition name="fade">
+    <StartCard v-if="isVisible.start_block"/>
+  </transition>
+
+  <transition name="fade">
+    <CommentsCard v-if="isVisible.comments_block"/>
+  </transition>
+  </div>
+    <!-- <CommentsCard /> -->
     <!-- <input style="height: 100px; width: 100%; font-size: 40px" type="text" v-model="videoURL">
     <button style="font-size: 40px; cursor: pointer" @click="fetchVideo">get video info</button>
     <button style="font-size: 40px; cursor: pointer" @click="fetchComments">get comments info</button>
     <VideoCard v-if="videoData.is_visible" />
-    <CommentsGrid /> -->
+    <CommentsCard /> -->
 </template>
 
 <script>
 import axios from 'axios'
 import { mapGetters, mapActions } from "vuex";
 
-import VideoCard from '../components/VideoCard'
-import CommentsGrid from '../components/CommentsGrid'
+import StartCard from '../components/StartCard'
+import CommentsCard from '../components/CommentsCard'
 
 export default {
   components: {
-    VideoCard,
-    CommentsGrid
+    StartCard,
+    CommentsCard
   },
 
 
@@ -30,7 +39,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      videoData: 'video/videoData'
+      isVisible: 'visible/visibilityData'
     })
   },
 
@@ -58,13 +67,13 @@ export default {
 
 
   async mounted() {
-    
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  .main-container {
-
+  .main-wrapper {
+    height: calc(100vh);
+    margin-top: -70px;
   }
 </style>

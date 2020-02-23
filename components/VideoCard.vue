@@ -1,21 +1,10 @@
 <template>
-  <div class="container">
-    <div class="content">
-      <div class="interact-block">
-        <h1 class="title">
-          Find Youtube Video, <br>
-          Get comments
-        </h1>
-        <h3 class="tooltip">
-          Just paste video url, <br>
-          load data, filter comments <br>
-          and get random results
-        </h3>
-        <AppInput v-model="videoUrl"/>
-      </div>
-      <div class="video-block">
-
-      </div>
+  <div class="video-container">
+    <img class="video-img" :src="videoImgSrc" alt="">
+    <img class="video-shadow" src="~assets/img/shadow.png" alt="" >
+    <div class="video-info">
+      <div class="title">{{ videoTitle }}</div>
+      <div class="views-count">{{ videoData.viewCount || '~' }} views</div>
     </div>
   </div>
 </template>
@@ -23,50 +12,64 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 
-import AppInput from './AppInput'
-
 export default {
-  components: {
-    AppInput
-  },
-  
-
-  data() {
-    return {
-      videoUrl: '---'
-    }
-  },
-
-
   computed: {
     ...mapGetters({
       videoData: 'video/videoData'
-    })
+    }),
+
+    videoImgSrc() {
+      return this.videoData.thumbnails ? this.videoData.thumbnails.medium.url : 'https://forums.unrealengine.com/filedata/fetch?id=1155380&d=1436719052'
+    },
+
+    videoTitle() {
+      let title = this.videoData.title;
+      if (title) {
+        return title.length > 15 ? title.slice(0, 15) + '...' : title
+      } else return 'Video title...'
+    }
   },
-
-
-  mounted() {
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-  .content {
-    display: flex;
-    .interact-block {
+  .video-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .video-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video-shadow {
+      position: absolute;
+      z-index: 1;
+      left: -500px;
+      bottom: -300px;
+    }
+    .video-info {
+      width: 100%;
+      padding: 20px 40px;
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      bottom: 0;
+      font-family: Akkurat;
+      color: white;
       .title {
-        font-family: Circular;
-        font-size: 3em;
+        font-size: 2.3em;
       }
-      .tooltip {
-        font-family: Akkurat;
-        font-size: 1.3em;
-        font-weight: 400;
-        letter-spacing: 1.5px;
-      }
-      .video-url-input {
-        border-bottom: 2px solid black;
+      .views-count {
+        font-size: 1.5em;
       }
     }
   }
+
+
 </style>
+
+
+  

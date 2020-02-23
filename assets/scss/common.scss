@@ -1,5 +1,5 @@
 .container {
-  max-width: 1080px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
 }
@@ -35,4 +35,18 @@
 
 .text-center {
   text-align: center;
+}
+
+.disabled-button {
+  background-color: #fff;
+}
+
+// VUE - TRANSITIONS 
+
+.fade-enter-active, .fade-leave-active {
+  transition: .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(100px);
 }

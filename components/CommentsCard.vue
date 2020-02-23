@@ -1,19 +1,24 @@
 <template>
-  <div style="height: 500px">
-    <FilterList :filters="filters"/>
-    {{ filteredData.length  }}
-    <ul>
-      <li v-for="(item, index) in filteredData" :key="index">{{ item.textOriginal }}</li>
-    </ul>
+  <div class="container flex justify-center align-center">
+    <div class="content">
+      <FilterList :filters="filters"/>
+        {{ filteredData  }}
+      <CommentsList :comments="[{textOriginal: '1 comment'}, {textOriginal: '2 comment'}]"/>
+      <!-- <ul> -->
+        <!-- <li v-for="(item, index) in filteredData" :key="index">{{ item.textOriginal }}</li> -->
+      <!-- </!-->
+    </div>
   </div>
 </template>
 
 <script>
 import FilterList from './FilterList'
+import CommentsList from './CommentsList'
 
 export default {
   components: {
-    FilterList
+    FilterList,
+    CommentsList
   },
 
 
@@ -90,5 +95,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  .container {
+    height: 100%;
+    .content {
+      width: 100%;
+      max-width: 700px;
+    }
+  }
 </style>
