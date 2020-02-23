@@ -11,6 +11,7 @@
           load data, filter comments <br>
           and get random results
         </h3>
+        <AppInput v-model="videoUrl"/>
       </div>
       <div class="video-block">
 
@@ -22,12 +23,30 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 
+import AppInput from './AppInput'
+
 export default {
+  components: {
+    AppInput
+  },
+  
+
+  data() {
+    return {
+      videoUrl: '---'
+    }
+  },
+
+
   computed: {
     ...mapGetters({
       videoData: 'video/videoData'
     })
   },
+
+
+  mounted() {
+  }
 }
 </script>
 
