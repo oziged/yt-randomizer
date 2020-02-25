@@ -35,7 +35,7 @@ module.exports = {
       }
     },
   },
-  plugins: ['~plugins/filters.js'],
+  plugins: ['~plugins/filters.js', '~plugins/modal.js', '~plugins/checkbox.js'],
   modules: ['@nuxtjs/style-resources'],
   css: ['~assets/main.scss'],
   styleResources: {

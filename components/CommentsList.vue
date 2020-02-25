@@ -1,11 +1,12 @@
 <template>
   <div>
-    123
+    {{ comments }}
   </div>
 </template>
 
 <script>
 export default {
+  props: ['comments']
 }
 </script>
 

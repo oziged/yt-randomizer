@@ -1,6 +1,6 @@
 export const state = () => ({
-  start_block: false,
-  comments_block: true
+  start_block: true,
+  comments_block: false
 })
 
 export const getters = {

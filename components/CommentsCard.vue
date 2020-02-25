@@ -1,12 +1,25 @@
 <template>
   <div class="container flex justify-center align-center">
     <div class="content">
-      <FilterList :filters="filters"/>
-        {{ filteredData  }}
-      <CommentsList :comments="[{textOriginal: '1 comment'}, {textOriginal: '2 comment'}]"/>
+      <button @click="$modal.show('filters')">filters</button>
+      <modal name="filters" width="400" height="auto">
+        <FilterList :filters="filters"/>
+      </modal>
+        <!-- {{ filteredData  }} -->
+      <div class="comments-list">
+        <div class="comment-headers">
+          <div class="username">user</div>
+          <div class="comment-text">comment</div>
+        </div>
+        <div class="comment-item" v-for="(item, index) in filteredData" :key="index">
+          <div class="username">{{ item.authorDisplayName }}</div>
+          <div class="comment-text">{{ item.textOriginal }}</div>
+        </div>
+      </div>
       <!-- <ul> -->
         <!-- <li v-for="(item, index) in filteredData" :key="index">{{ item.textOriginal }}</li> -->
       <!-- </!-->
+    <!-- </ul> -->
     </div>
   </div>
 </template>
@@ -24,6 +37,7 @@ export default {
 
   data() {
     return {
+      test:[{textOriginal: '1 comment', authorDisplayName: 'lololshka'}, {authorDisplayName: 'asdad xds ', textOriginal: '2 comment'}],
       filters: {
         includeReplies: false,
         oneCommentForAuthor: false,
@@ -100,6 +114,35 @@ export default {
     .content {
       width: 100%;
       max-width: 700px;
+      box-shadow: 0 0 5px #0000003b;
+      padding: 20px;
+      border-radius: 15px;
+      .comments-list {
+        width: 100%;
+        .comment-headers {
+          display: flex;
+          padding: 10px 0;
+          margin-bottom: 5px;
+          border-top: 2px solid rgba(0,0,0,.04);
+          border-bottom: 2px solid rgba(0,0,0,.04);
+          .username {
+            width: 30%;
+          }
+          .comments-text {
+            width: 70%;
+          }
+        }
+        .comment-item {
+          display: flex;
+          padding: 10px 0;
+          .username {
+            width: 30%;
+          }
+          .comments-text {
+            width: 70%;
+          }
+        }
+      }
     }
   }
 </style>
