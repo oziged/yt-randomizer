@@ -2,10 +2,10 @@
   <div class="container flex justify-center align-center">
     <div class="content">
       <button @click="$modal.show('filters')">filters</button>
-      <modal name="filters" width="400" height="auto">
-        <FilterList :filters="filters"/>
-      </modal>
-        <!-- {{ filteredData  }} -->
+    <modal name="filters" width="400" height="auto">
+      <FilterList :filters="filters"/>
+    </modal>
+    <!-- {{ filteredData  }} -->
       <div class="comments-list">
         <div class="comment-headers">
           <div class="username">user</div>

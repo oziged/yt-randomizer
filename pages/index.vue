@@ -67,9 +67,11 @@ export default {
 
 
   async mounted() {
+    // this.$store.dispatch('comments/fetchComments', {id: this.parseVideoId('https://www.youtube.com/watch?v=V3XYumIwCeo')})
   },
 }
 </script>
+
 
 <style lang="scss" scoped>
   .main-wrapper {

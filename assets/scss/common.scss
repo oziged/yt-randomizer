@@ -50,3 +50,9 @@
   opacity: 0;
   transform: translateY(100px);
 }
+
+// SOME FIXES OF PLUGINS CSS
+
+.pretty.p-switch .state label:after, .pretty.p-switch .state label:before {
+  transform: translate(0px,-1px) scale(.8);
+}

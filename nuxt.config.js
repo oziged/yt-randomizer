@@ -37,7 +37,7 @@ module.exports = {
   },
   plugins: ['~plugins/filters.js', '~plugins/modal.js', '~plugins/checkbox.js'],
   modules: ['@nuxtjs/style-resources'],
-  css: ['~assets/main.scss'],
+  css: ['~assets/main.scss', '../node_modules/vue-js-modal/dist/styles.css'],
   styleResources: {
     scss: [
       '~assets/main.scss',
