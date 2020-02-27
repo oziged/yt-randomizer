@@ -1,25 +1,29 @@
 <template>
   <div class="container flex justify-center align-center">
-    <div class="content">
-      <button @click="$modal.show('filters')">filters</button>
-    <modal name="filters" width="400" height="auto">
-      <FilterList :filters="filters"/>
-    </modal>
-    <!-- {{ filteredData  }} -->
-      <div class="comments-list">
+    <div class="content-wrapper">
+      <transition name="fade">
+        <AppLoader v-if="isLoading" :title="`${loadedCommentsCount} / ${totalCommentsCount}`" style="border-radius: 15px;" />
+      </transition>
+      <div class="comments-nav">
+        <div class="filters-button" @click="$modal.show('filters')">Filters</div>
         <div class="comment-headers">
           <div class="username">user</div>
           <div class="comment-text">comment</div>
         </div>
-        <div class="comment-item" v-for="(item, index) in filteredData" :key="index">
-          <div class="username">{{ item.authorDisplayName }}</div>
-          <div class="comment-text">{{ item.textOriginal }}</div>
-        </div>
       </div>
-      <!-- <ul> -->
-        <!-- <li v-for="(item, index) in filteredData" :key="index">{{ item.textOriginal }}</li> -->
-      <!-- </!-->
-    <!-- </ul> -->
+
+      <modal name="filters" width="400" height="auto">
+        <FilterList :filters="filters"/>
+      </modal>
+
+      <simplebar class="content">      
+        <div class="comments-list">
+          <div class="comment-item" v-for="(item, index) in filteredData" :key="index">
+            <div class="username">{{ item.authorDisplayName }}</div>
+            <div class="comment-text">{{ item.textOriginal }}</div>
+          </div>
+        </div>
+      </simplebar>
     </div>
   </div>
 </template>
@@ -27,11 +31,15 @@
 <script>
 import FilterList from './FilterList'
 import CommentsList from './CommentsList'
+import AppLoader from './AppLoader'
+import simplebar from 'simplebar-vue';
 
 export default {
   components: {
     FilterList,
-    CommentsList
+    CommentsList,
+    AppLoader,
+    simplebar
   },
 
 
@@ -48,6 +56,18 @@ export default {
 
 
   computed: {
+    isLoading() {
+      return this.$store.state.comments.is_loading
+    },
+
+    loadedCommentsCount() {
+      return this.$store.state.comments.loaded_count
+    },
+
+    totalCommentsCount() {
+      return this.$store.state.video.fetched_data.commentCount || 0
+    },
+    
     filteredData() {
       let filteredArray = JSON.parse(JSON.stringify(this.$store.state.comments.fetched_data))
 
@@ -108,37 +128,70 @@ export default {
 }
 </script>
 
+<style>
+ @import 'simplebar/dist/simplebar.min.css';
+</style>
+
 <style lang="scss" scoped>
   .container {
     height: 100%;
-    .content {
+    .content-wrapper {
+      position: relative;
       width: 100%;
-      max-width: 700px;
+      max-width: 900px;
+      height: 50vh;
+      min-height: 400px;
       box-shadow: 0 0 5px #0000003b;
-      padding: 20px;
       border-radius: 15px;
-      .comments-list {
-        width: 100%;
+      .content {
+        padding: 20px;
+        padding-top: 115px;
+        height: 100%;
+      }
+      .comments-nav {
+        position: absolute;
+        z-index: 10;
+        width: calc(100% - 40px);
+        left: 20px;
+        top: 0;
+        padding-top: 20px;
+        background-color: white;
+        .filters-button {
+          cursor: pointer;
+          padding: 5px;
+          border: 2px solid $light-red;
+          width: fit-content;
+          border: 2px solid #e7333357;
+          margin-bottom: 10px;
+          transition: border .5s;
+          &:hover {
+            border: 2px solid #e73333ce;
+          }
+        }
         .comment-headers {
           display: flex;
           padding: 10px 0;
-          margin-bottom: 5px;
           border-top: 2px solid rgba(0,0,0,.04);
           border-bottom: 2px solid rgba(0,0,0,.04);
           .username {
             width: 30%;
           }
-          .comments-text {
+          .comment-text {
             width: 70%;
           }
         }
+      }
+      .comments-list {
+        width: 100%;
         .comment-item {
           display: flex;
           padding: 10px 0;
+          border-bottom: 1px dashed rgba(0,0,0,.1);
           .username {
             width: 30%;
+            padding-right: 20px;
           }
-          .comments-text {
+          .comment-text {
             width: 70%;
           }
         }

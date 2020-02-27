@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const state = () => ({
   fetched_data: {},
-  is_visible: false
+  loaded_count: 0,
+  is_loading: false
 })
 
 
@@ -24,6 +25,8 @@ export const actions = {
         url = nextPageToken ? url + `&pageToken=${nextPageToken}` : url
 
         await axios.get(url).then(async response => {
+          commit('SET_STATE_DATA', {is_loading: true})
+
           for (let i = 0; i < response.data.items.length; i++) {
             commentsCount++
             let item = response.data.items[i]
@@ -47,10 +50,12 @@ export const actions = {
               })
             }
           }
+          commit('SET_STATE_DATA', {loaded_count: Object.keys(res).length})
           if (response.data.nextPageToken) await getPageComments(response.data.nextPageToken)
         })
       } 
 
+      commit('SET_STATE_DATA', {is_loading: false})
       commit('SET_FETCHED_DATA', res)
     },
 }
@@ -60,4 +65,10 @@ export const mutations = {
   SET_FETCHED_DATA(state, data) {
     state.fetched_data = data
   },
+
+  SET_STATE_DATA(state, payload) {
+    Object.entries(payload).forEach(item => {
+      state[item[0]] = item[1]
+    })
+  }
 }

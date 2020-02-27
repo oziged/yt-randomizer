@@ -1,13 +1,13 @@
 <template>
-  <div class="main-wrapper">
-  <transition name="fade">
-    <StartCard v-if="isVisible.start_block"/>
-  </transition>
+    <div class="main-wrapper">
+    <transition name="fade">
+      <StartCard v-if="isVisible.start_block"/>
+    </transition>
 
-  <transition name="fade">
-    <CommentsCard v-if="isVisible.comments_block"/>
-  </transition>
-  </div>
+    <transition name="fade">
+      <CommentsCard v-if="isVisible.comments_block"/>
+    </transition>
+    </div>
     <!-- <CommentsCard /> -->
     <!-- <input style="height: 100px; width: 100%; font-size: 40px" type="text" v-model="videoURL">
     <button style="font-size: 40px; cursor: pointer" @click="fetchVideo">get video info</button>
