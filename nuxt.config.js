@@ -10,7 +10,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Nuxt.js project' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Scada:400,700&display=swap' }
     ]
   },
   /*
@@ -35,7 +36,8 @@ module.exports = {
       }
     },
   },
-  plugins: ['~plugins/filters.js', '~plugins/modal.js', '~plugins/checkbox.js'],
+  
+  plugins: ['~plugins/filters.js', '~plugins/modal.js', '~plugins/checkbox.js', '~plugins/window-size.js'],
   modules: ['@nuxtjs/style-resources'],
   css: ['~assets/main.scss', '../node_modules/vue-js-modal/dist/styles.css'],
   styleResources: {

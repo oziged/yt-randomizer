@@ -9,11 +9,6 @@
 <script>
 export default {
   props: ['filters'],
-  data() {
-    return {
-      test: true
-    }
-  },
 
   mounted() {
   },
@@ -23,10 +18,6 @@ export default {
 
 <style src="../node_modules/pretty-checkbox/dist/pretty-checkbox.min.css"></style>
 <style lang="scss">
-  .filter-list {
-    padding: 20px;
-    border-radius: 10px;
-  }
   .p-switch {
     display: block;
     margin-bottom: 10px;

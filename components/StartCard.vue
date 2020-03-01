@@ -10,7 +10,7 @@
         load data, filter comments <br>
         and get random results
       </h3>
-      <AppInput v-model="videoUrl" @input="updateVideoBlock"/>
+      <StartCardInput v-model="videoUrl" @input="updateVideoBlock"/>
       <div class="get-comments-button flex justify-center align-center" @click="getComments">Get comments</div>
     </div>
     <div class="video-block">
@@ -22,12 +22,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 
-import AppInput from './AppInput'
+import StartCardInput from './StartCard/StartCardInput'
 import VideoCard from './VideoCard'
 
 export default {
   components: {
-    AppInput,
+    StartCardInput,
     VideoCard
   },
   

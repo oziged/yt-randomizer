@@ -75,7 +75,9 @@ export default {
 
 <style lang="scss" scoped>
   .main-wrapper {
+    overflow-y: hidden;
     height: calc(100vh);
     margin-top: -70px;
+    min-height: 600px;
   }
 </style>

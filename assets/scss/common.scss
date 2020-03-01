@@ -4,11 +4,6 @@
   margin: 0 auto;
 }
 
-// .content {
-//   display: block;
-//   margin: 0 auto;
-// }
-
 .flex {
   display: flex;
 }
@@ -35,6 +30,10 @@
 
 .text-center {
   text-align: center;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
 }
 
 .disabled-button {
