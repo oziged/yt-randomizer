@@ -45,7 +45,11 @@
             <div class="comment-date">{{ new Date(item.publishedAt).toLocaleDateString() }}</div>
           </div>
         </div>
-        <CommentsCardPagination :paginationParams = "paginationParams"/>
+        <CommentsCardPagination 
+          :currentPage="currentPage" 
+          :itemsPerPage="itemsPerPage" 
+          :totalItems="filteredData.length"
+        />
       </simplebar>
 
     </div>
@@ -78,11 +82,12 @@ export default {
         oneCommentForAuthor: false,
         onlySAMPNicknames: false
       },
-
       sortSettings: {
         key: null,
         type: null
       },
+      currentPage: 0,
+      itemsPerPage: 10,
       test: 'sort-default',
       winnersCount: 1
     }
@@ -131,17 +136,9 @@ export default {
     },
 
     paginatedData() {
-      let start = this.paginationParams.currentPage * this.paginationParams.itemsPerPage
-      let end = start + this.paginationParams.itemsPerPage
+      let start = this.currentPage * this.itemsPerPage
+      let end = start + this.itemsPerPage
       return this.filteredData.slice(start, end)
-    },
-
-    paginationParams() {
-      return {
-        currentPage: 0,
-        itemsPerPage: 10,
-        totalItems: this.filteredData.length
-      }
     },
     
     filteredData() {
@@ -220,8 +217,7 @@ export default {
 
   mounted() {
     document.onclick = () => {
-      this.paginationParams.currentPage++
-      console.log(this.paginationParams.currentPage)
+      this.currentPage++
     }
   },
 }

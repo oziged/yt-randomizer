@@ -1,34 +1,32 @@
 <template>
-  <div>
-    <div class="first-page">
-      <div class="number">1</div>
-    </div>
-    <div class="temp-pages">
-      {{ tempPages }}
-    </div>
-    <div class="last-page">
-
+  <div class="flex">
+    <div class="first-page number">1</div>
+      <div :class="{'temp-page' :true, number: true, 'number-disabled': lastPage < item}" v-for="(item,index) in tempPages" :key="index">
+        {{ item }}
+      </div>
+    <div class="last-page number">
+      {{ lastPage }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['paginationParams'],
+  props: ['currentPage', 'itemsPerPage', 'totalItems'],
 
   computed: {
     tempPages()  {
-      // NOTE -> not reactive paginationParams prop
-        let centerNum = this.paginationParams.currentPage;
-        return [centerNum-2, centerNum-1, centerNum, centerNum+1, centerNum+2]
-      }
+      let centerPage = this.currentPage;
+      if (centerPage < 5) return [2,3,4,5,6]
+      return [centerPage-2, centerPage-1, centerPage, centerPage+1, centerPage+2]
+    },
+
+    lastPage() {
+      return Math.ceil(this.totalItems / this.itemsPerPage)
+    }
   },
 
   mounted() {
-    setInterval(() => {
-      let centerNum = this.paginationParams.currentPage;
-      console.log([centerNum-2, centerNum-1, centerNum, centerNum+1, centerNum+2])
-    }, 500);
   },
 }
 </script>
@@ -52,5 +50,7 @@ export default {
 
   .number-disabled {
     background-color: $pagination-disabled;
+    color: #b6b6b6;
+    cursor: not-allowed;
   }
 </style>
