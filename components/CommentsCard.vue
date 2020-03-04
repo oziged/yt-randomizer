@@ -38,14 +38,16 @@
 
       <simplebar class="simplebar comments-content">      
         <div class="comments-list">
-          <div class="comment-item" v-for="(item, index) in filteredData" :key="index">
+          <div class="comment-item" v-for="(item) in paginatedData" :key="item.publishedAt + Math.random()">
             <div class="username">{{ item.authorDisplayName }}</div>
             <div class="like-count">{{ item.likeCount }}</div>
             <div class="comment-text">{{ item.textOriginal.slice(0,50) + '...' }}</div>
             <div class="comment-date">{{ new Date(item.publishedAt).toLocaleDateString() }}</div>
           </div>
         </div>
+        <CommentsCardPagination :paginationParams = "paginationParams"/>
       </simplebar>
+
     </div>
   </div>
 </template>
@@ -56,6 +58,7 @@ import CommentsList from './CommentsList'
 import AppLoader from './AppLoader'
 import simplebar from 'simplebar-vue';
 import CommentsCardInput from './CommentsCard/CommentsCardInput'
+import CommentsCardPagination from './CommentsCard/CommentsCardPagination'
 
 export default {
   components: {
@@ -63,7 +66,8 @@ export default {
     CommentsList,
     AppLoader,
     simplebar,
-    CommentsCardInput
+    CommentsCardInput,
+    CommentsCardPagination
   },
 
 
@@ -124,6 +128,20 @@ export default {
 
     winnersList() {
       return this.$store.state.result.winners_list
+    },
+
+    paginatedData() {
+      let start = this.paginationParams.currentPage * this.paginationParams.itemsPerPage
+      let end = start + this.paginationParams.itemsPerPage
+      return this.filteredData.slice(start, end)
+    },
+
+    paginationParams() {
+      return {
+        currentPage: 0,
+        itemsPerPage: 10,
+        totalItems: this.filteredData.length
+      }
     },
     
     filteredData() {
@@ -201,10 +219,10 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
-    this.test = 'sort-top'
-      
-    }, 2000);
+    document.onclick = () => {
+      this.paginationParams.currentPage++
+      console.log(this.paginationParams.currentPage)
+    }
   },
 }
 </script>
@@ -329,6 +347,7 @@ export default {
         .comment-item {
           display: flex;
           padding: 10px 0;
+          transition: .5s;
           border-bottom: 1px dashed rgba(0,0,0,.1);
           .username {
             width: 30%;
@@ -378,5 +397,4 @@ export default {
     border-top: 5px solid rgb(78, 200, 129);
     transform: rotate(180deg);
   }
-
 </style>
