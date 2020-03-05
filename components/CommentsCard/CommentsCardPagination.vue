@@ -1,9 +1,17 @@
 <template>
-  <div class="flex">
+  <div>
     <div class="first-page number">1</div>
-      <div :class="{'temp-page' :true, number: true, 'number-disabled': lastPage < item}" v-for="(item,index) in tempPages" :key="index">
+    <div class="divider">--</div>
+    <div class="temp-pages">
+      <div 
+        :class="{'temp-page' :true, number: true, 'number-disabled': lastPage < item}" 
+        v-for="(item,index) in tempPages" :key="index"
+        @click="$emit('changePage', item)"
+      >
         {{ item }}
       </div>
+    </div>
+    <div class="divider">--</div>
     <div class="last-page number">
       {{ lastPage }}
     </div>
@@ -32,6 +40,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .divider {
+    padding: 10px;
+    font-size: .9em;
+    font-family: Akkurat;
+  }
+
+  .temp-page {
+    margin: 0 5px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
   .number {
     padding: 10px 20px;
     border-radius: 5px;

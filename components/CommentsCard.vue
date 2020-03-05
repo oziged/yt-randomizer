@@ -45,10 +45,12 @@
             <div class="comment-date">{{ new Date(item.publishedAt).toLocaleDateString() }}</div>
           </div>
         </div>
-        <CommentsCardPagination 
+        <CommentsCardPagination
+          class="pagination-block"
           :currentPage="currentPage" 
           :itemsPerPage="itemsPerPage" 
           :totalItems="filteredData.length"
+          @changePage="currentPage = $event"
         />
       </simplebar>
 
@@ -216,9 +218,6 @@ export default {
   },
 
   mounted() {
-    document.onclick = () => {
-      this.currentPage++
-    }
   },
 }
 </script>
@@ -243,6 +242,12 @@ export default {
         padding-top: 115px;
         min-height: 400px;
         max-height: calc(100vh - 200px);
+      }
+      .pagination-block {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .comments-nav {
         position: absolute;
