@@ -41,7 +41,7 @@
           <div class="comment-item" v-for="(item) in paginatedData" :key="item.publishedAt + Math.random()">
             <div class="username">{{ item.authorDisplayName }}</div>
             <div class="like-count">{{ item.likeCount }}</div>
-            <div class="comment-text">{{ item.textOriginal.slice(0,50) + '...' }}</div>
+            <div class="comment-text">{{ item.textOriginal.slice(0,40) + '...' }}</div>
             <div class="comment-date">{{ new Date(item.publishedAt).toLocaleDateString() }}</div>
           </div>
         </div>

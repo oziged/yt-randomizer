@@ -1,10 +1,15 @@
 <template>
   <div>
-    <div class="first-page number">1</div>
+    <div 
+      :class="{'first-page': true, number: true, 'number-active': currentPage == 0}" 
+      @click="$emit('changePage', 0)"
+    >
+      1
+    </div>
     <div class="divider">--</div>
     <div class="temp-pages">
       <div 
-        :class="{'temp-page' :true, number: true, 'number-disabled': lastPage < item}" 
+        :class="{'temp-page': true, number: true, 'number-disabled': lastPage < item, 'number-active': currentPage == item}" 
         v-for="(item,index) in tempPages" :key="index"
         @click="$emit('changePage', item)"
       >
@@ -12,7 +17,7 @@
       </div>
     </div>
     <div class="divider">--</div>
-    <div class="last-page number">
+    <div :class="{'last-page': true, number: true, 'number-active': currentPage == lastPage}" @click="$emit('changePage', lastPage)">
       {{ lastPage }}
     </div>
   </div>
@@ -24,17 +29,22 @@ export default {
 
   computed: {
     tempPages()  {
-      let centerPage = this.currentPage;
-      if (centerPage < 5) return [2,3,4,5,6]
-      return [centerPage-2, centerPage-1, centerPage, centerPage+1, centerPage+2]
+      let currentPage = this.currentPage;
+      let lastPage = this.lastPage
+      if (currentPage < 5) return [2,3,4,5,6]
+      if (currentPage > this.lastPage-3) return [lastPage-5, lastPage-4, lastPage-3, lastPage-2, lastPage-1]
+      return [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]
     },
 
     lastPage() {
-      return Math.ceil(this.totalItems / this.itemsPerPage)
+      return Math.floor(this.totalItems / this.itemsPerPage)
     }
   },
 
   mounted() {
+    setInterval(() => {
+      console.log(this.currentPage, this.lastPage, this.totalItems)
+    }, 100);
   },
 }
 </script>
@@ -62,6 +72,8 @@ export default {
     display: inline-block;
     border: 1px solid rgba(0,0,0,.09);
     display: inline-block;
+    cursor: pointer;
+    user-select: none;  
   }
 
   .number-active {
