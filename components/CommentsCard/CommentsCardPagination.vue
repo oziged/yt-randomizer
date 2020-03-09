@@ -2,23 +2,23 @@
   <div>
     <div 
       :class="{'first-page': true, number: true, 'number-active': currentPage == 0}" 
-      @click="$emit('changePage', 0)"
+      @click="$emit('changePage', 1)"
     >
       1
     </div>
     <div class="divider">--</div>
     <div class="temp-pages">
       <div 
-        :class="{'temp-page': true, number: true, 'number-disabled': lastPage < item, 'number-active': currentPage == item}" 
+        :class="{'temp-page': true, number: true, 'number-disabled': lastPage <= item, 'number-active': currentPage == item-1}" 
         v-for="(item,index) in tempPages" :key="index"
-        @click="$emit('changePage', item)"
+        @click="lastPage <= item ? '' : $emit('changePage', item)"
       >
         {{ item }}
       </div>
     </div>
     <div class="divider">--</div>
-    <div :class="{'last-page': true, number: true, 'number-active': currentPage == lastPage}" @click="$emit('changePage', lastPage)">
-      {{ lastPage }}
+    <div :class="{'last-page': true, number: true, 'number-active': currentPage == lastPage-1 }" @click="$emit('changePage', lastPage)">
+      {{ lastPage == 0 ? 1 : lastPage }}
     </div>
   </div>
 </template>
@@ -28,8 +28,8 @@ export default {
   props: ['currentPage', 'itemsPerPage', 'totalItems'],
 
   computed: {
-    tempPages()  {
-      let currentPage = this.currentPage;
+    tempPages()  {  
+      let currentPage = this.currentPage+1;
       let lastPage = this.lastPage
       if (currentPage < 5) return [2,3,4,5,6]
       if (currentPage > this.lastPage-3) return [lastPage-5, lastPage-4, lastPage-3, lastPage-2, lastPage-1]
@@ -38,7 +38,7 @@ export default {
 
     lastPage() {
       return Math.floor(this.totalItems / this.itemsPerPage)
-    }
+    },
   },
 
   mounted() {

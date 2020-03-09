@@ -1,9 +1,8 @@
 <template>
   <div class="container flex justify-center align-center">
     <div class="content-wrapper">
-      <!-- {{ filteredData }} -->
-      <transition name="fade">
-        <AppLoader v-if="isLoading" :title="`${loadedCommentsCount} / ${totalCommentsCount}`" style="border-radius: 15px;" />
+      <transition name="fade-down">
+        <AppCircleLoader v-if="isLoading" :title="`${loadedCommentsCount} / ${totalCommentsCount}`" style="border-radius: 15px;" />
       </transition>
       <div class="comments-nav">
         <div class="interact-buttons flex">
@@ -39,20 +38,21 @@
       <simplebar class="simplebar comments-content">      
         <div class="comments-list">
           <div class="comment-item" v-for="(item) in paginatedData" :key="item.publishedAt + Math.random()">
-            <div class="username">{{ item.authorDisplayName }}</div>
+            <div class="username">{{ item.authorDisplayName.length > 20 ? item.authorDisplayName.slice(0,20) + '...' : item.authorDisplayName }}</div>
             <div class="like-count">{{ item.likeCount }}</div>
             <div class="comment-text">{{ item.textOriginal.slice(0,40) + '...' }}</div>
             <div class="comment-date">{{ new Date(item.publishedAt).toLocaleDateString() }}</div>
           </div>
         </div>
-        <CommentsCardPagination
-          class="pagination-block"
-          :currentPage="currentPage" 
-          :itemsPerPage="itemsPerPage" 
-          :totalItems="filteredData.length"
-          @changePage="currentPage = $event"
-        />
       </simplebar>
+
+      <CommentsCardPagination
+        class="pagination-block"
+        :currentPage="currentPage" 
+        :itemsPerPage="itemsPerPage" 
+        :totalItems="filteredData.length"
+        @changePage="currentPage = $event-1"
+      />
 
     </div>
   </div>
@@ -61,7 +61,7 @@
 <script>
 import FilterList from './FilterList'
 import CommentsList from './CommentsList'
-import AppLoader from './AppLoader'
+import AppCircleLoader from './AppCircleLoader'
 import simplebar from 'simplebar-vue';
 import CommentsCardInput from './CommentsCard/CommentsCardInput'
 import CommentsCardPagination from './CommentsCard/CommentsCardPagination'
@@ -70,7 +70,7 @@ export default {
   components: {
     FilterList,
     CommentsList,
-    AppLoader,
+    AppCircleLoader,
     simplebar,
     CommentsCardInput,
     CommentsCardPagination
@@ -217,7 +217,11 @@ export default {
     }
   },
 
-  mounted() {
+
+  watch: {
+    filteredData() {
+      this.currentPage = 0
+    }
   },
 }
 </script>
@@ -237,17 +241,20 @@ export default {
       min-height: 400px;
       box-shadow: 0 0 5px #0000003b;
       border-radius: 15px;
-      .comments-content {
-        padding: 20px;
-        padding-top: 115px;
-        min-height: 400px;
-        max-height: calc(100vh - 200px);
-      }
       .pagination-block {
-        margin-top: 20px;
+        position: absolute;
+        width: 100%;
+        bottom: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      .comments-content {
+        padding: 20px;
+        padding: 115px 20px 60px 20px;
+        padding-top: 115px;
+        min-height: 400px;
+        max-height: calc(100vh - 200px);
       }
       .comments-nav {
         position: absolute;

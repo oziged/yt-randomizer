@@ -42,11 +42,15 @@
 
 // VUE - TRANSITIONS 
 
-.fade-enter-active, .fade-leave-active {
+.fade-down-enter-active, .fade-down-leave-active, .fade-enter-active, .fade-leave-active {
   transition: .5s;
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-down-enter, .fade-down-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
   transform: translateY(100px);
 }

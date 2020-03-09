@@ -67,7 +67,7 @@ export default {
           this.$store.commit('visible/CHANGE_VISIBILITY', {type: 'comments', bool: true})
         }, 500);
       }
-    }
+    },
   },
 
 

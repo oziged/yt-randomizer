@@ -1,19 +1,19 @@
 <template>
-    <div class="main-wrapper">
+  <div class="main-wrapper">
     <transition name="fade">
+      <div v-if="appLoading" class="first-load-loader">
+        <AppYtLoader />
+        <span>Loading</span>
+      </div>
+    </transition>
+    <transition name="fade-down">
       <StartCard v-if="isVisible.start_block"/>
     </transition>
 
-    <transition name="fade">
+    <transition name="fade-down">
       <CommentsCard v-if="isVisible.comments_block"/>
     </transition>
-    </div>
-    <!-- <CommentsCard /> -->
-    <!-- <input style="height: 100px; width: 100%; font-size: 40px" type="text" v-model="videoURL">
-    <button style="font-size: 40px; cursor: pointer" @click="fetchVideo">get video info</button>
-    <button style="font-size: 40px; cursor: pointer" @click="fetchComments">get comments info</button>
-    <VideoCard v-if="videoData.is_visible" />
-    <CommentsCard /> -->
+  </div>
 </template>
 
 <script>
@@ -22,17 +22,19 @@ import { mapGetters, mapActions } from "vuex";
 
 import StartCard from '../components/StartCard'
 import CommentsCard from '../components/CommentsCard'
+import AppYtLoader from '../components/AppYtLoader'
 
 export default {
   components: {
     StartCard,
-    CommentsCard
+    CommentsCard,
+    AppYtLoader
   },
 
 
   data() {
     return {
-      videoURL: 'https://www.youtube.com/watch?v=q_WOwAxQGQ0',
+      appLoading: true,
     }
   },
 
@@ -59,15 +61,27 @@ export default {
       })
     },
 
-
     parseVideoId(link) {
       return link.split('?v=')[1]
+    },
+
+    async watchImagesLoad() {
+      let imgs = document.querySelectorAll('img')
+      let promises = []
+
+      imgs.forEach(item => {
+        if (item.complete) return
+        else promises.push(new Promise(resolve => item.onload = () => resolve()))
+      })
+
+      await Promise.all(promises)
     }
   },
 
 
   async mounted() {
-    // this.$store.dispatch('comments/fetchComments', {id: this.parseVideoId('https://www.youtube.com/watch?v=V3XYumIwCeo')})
+    await this.watchImagesLoad()
+    this.appLoading = false
   },
 }
 </script>
@@ -79,5 +93,34 @@ export default {
     height: calc(100vh);
     margin-top: -70px;
     min-height: 600px;
+  }
+
+  .first-load-loader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 1);
+    span {
+      font-family: Akkurat;
+      margin-top: 10px;
+      animation: span-loader 4s infinite;
+    }
+
+    @keyframes span-loader {
+      0%, 20%, 100% {
+        opacity: 0;
+      }
+      
+      50%, 80% {
+        opacity: 1;
+      }
+    }
   }
 </style>
