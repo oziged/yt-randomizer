@@ -16,7 +16,8 @@ export default {
 <style lang="scss" >
   header {
     height: 70px;
-    padding: 0 25px;
+    padding: 0 2%;
+    max-width: 1920px;
     .logo {
       height: 25px;
       font-family: Avenir;

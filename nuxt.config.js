@@ -37,7 +37,14 @@ module.exports = {
     },
   },
   
-  plugins: ['~plugins/filters.js', '~plugins/modal.js', '~plugins/checkbox.js', '~plugins/window-size.js'],
+  plugins: [
+    '~plugins/filters.js', 
+    '~plugins/modal.js', 
+    '~plugins/checkbox.js', 
+    '~plugins/window-size.js', 
+    { src: '~/plugins/notifications-server', mode: 'server' },
+    { src: '~/plugins/notifications-client', mode: 'client' }
+  ],
   modules: ['@nuxtjs/style-resources'],
   css: ['~assets/main.scss', '../node_modules/vue-js-modal/dist/styles.css'],
   styleResources: {

@@ -2,6 +2,7 @@
   <div>
     <AppHeader />
     <nuxt/>
+    <notifications group="app-alerts" position="bottom left"/>
   </div>
 </template>
 

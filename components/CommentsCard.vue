@@ -30,6 +30,11 @@
         <simplebar class="simplebar winners-content">      
               <div class="winner-card" v-for="(item, index) in winnersList" :key="index">
                 <div class="username">{{ item.authorDisplayName }}</div>
+                <div class="avatar">
+                  <a :href="item.authorChannelUrl" target="_blank">
+                    <img :src="item.authorProfileImageUrl" alt="">
+                  </a>
+                </div>
                 <div class="comment">{{ item.textOriginal }}</div>
               </div>
         </simplebar>
@@ -333,7 +338,7 @@ export default {
           text-align: center;
           color: white;
           font-family: Scada;
-          text-transform: uppercase;
+          // text-transform: uppercase;
           box-shadow: 0 0 13px #a52c2c;
           background: linear-gradient(to right, #cb2d3e, #ef473a);
           &:last-child {

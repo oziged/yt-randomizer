@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" @click="$notify({ group: 'app-alerts', type: 'error', title: 'Error message', text: 'Video has too many comments...' })">
     <div class="interact-block">
       <h1 class="title">
         Find Youtube Video, <br>
@@ -127,6 +127,9 @@ export default {
     }
   }
 
-
-  // - - - - - ANIMATIONS - - - - - //
+  @media (max-width: 1270px) {
+    .container {
+      padding: 0 2%;
+    }
+  }
 </style>
