@@ -132,4 +132,21 @@ export default {
       padding: 0 2%;
     }
   }
+
+  @media (max-width: 1200px) {
+    .container {
+      flex-direction: column;
+      justify-content: center;
+      .interact-block {
+        width: 50%;
+        text-align: center;
+        .input-container .label {
+          display: none;
+        }
+      }
+      .video-block {
+        display: none;
+      }
+    }
+  }
 </style>
