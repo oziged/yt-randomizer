@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div 
-      :class="{'first-page': true, number: true, 'number-active': currentPage == 0}" 
+    <div
+      :class="{'first-page': true, number: true, 'number-active': currentPage == 0}"
       @click="$emit('changePage', 1)"
     >
       1
     </div>
     <div class="divider">--</div>
     <div class="temp-pages">
-      <div 
-        :class="{'temp-page': true, number: true, 'number-disabled': lastPage <= item, 'number-active': currentPage == item-1}" 
+      <div
+        :class="{'temp-page': true, number: true, 'number-disabled': lastPage <= item, 'number-active': currentPage == item-1}"
         v-for="(item,index) in tempPages" :key="index"
         @click="lastPage <= item ? '' : $emit('changePage', item)"
       >
@@ -28,7 +28,7 @@ export default {
   props: ['currentPage', 'itemsPerPage', 'totalItems'],
 
   computed: {
-    tempPages()  {  
+    tempPages()  {
       let currentPage = this.currentPage+1;
       let lastPage = this.lastPage
       if (currentPage < 5) return [2,3,4,5,6]
@@ -37,7 +37,7 @@ export default {
     },
 
     lastPage() {
-      return Math.floor(this.totalItems / this.itemsPerPage)
+      return Math.ceil(this.totalItems / this.itemsPerPage)
     },
   },
 
@@ -73,7 +73,7 @@ export default {
     border: 1px solid rgba(0,0,0,.09);
     display: inline-block;
     cursor: pointer;
-    user-select: none;  
+    user-select: none;
   }
 
   .number-active {

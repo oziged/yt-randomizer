@@ -10,9 +10,9 @@
           <div class="button filters-button" @click="$modal.show('settings')">Settings</div>
         </div>
         <div class="comment-headers">
-          <div class="username">user</div>
+          <div class="username" @click="changeSort('user')"><span :class="handleSortClassName('user')">user</span></div>
           <div class="like-count" @click="changeSort('likes')"><span :class="handleSortClassName('likes')">likes</span></div>
-          <div class="comment-text">comment</div>
+          <div class="comment-text" @click="changeSort('comment')"><span :class="handleSortClassName('comment')">comment</span></div>
           <div class="comment-date" @click="changeSort('date')"><span :class="handleSortClassName('date')">date</span></div>
         </div>
       </div>
@@ -25,9 +25,9 @@
           <CommentsCardInput label="Number of winners" v-model="winnersCount"/>
         </div>
       </modal>
-      
+
       <modal name="winners" height="auto">
-        <simplebar class="simplebar winners-content">      
+        <simplebar class="simplebar winners-content">
               <div class="winner-card" v-for="(item, index) in winnersList" :key="index">
                 <div class="username">{{ item.authorDisplayName }}</div>
                 <div class="avatar">
@@ -40,7 +40,7 @@
         </simplebar>
       </modal>
 
-      <simplebar class="simplebar comments-content">      
+      <simplebar class="simplebar comments-content">
         <div class="comments-list">
           <div class="comment-item" v-for="(item) in paginatedData" :key="item.publishedAt + Math.random()">
             <div class="username">{{ item.authorDisplayName.length > 20 ? item.authorDisplayName.slice(0,20) + '...' : item.authorDisplayName }}</div>
@@ -53,8 +53,8 @@
 
       <CommentsCardPagination
         class="pagination-block"
-        :currentPage="currentPage" 
-        :itemsPerPage="itemsPerPage" 
+        :currentPage="currentPage"
+        :itemsPerPage="itemsPerPage"
         :totalItems="filteredData.length"
         @changePage="currentPage = $event-1"
       />
@@ -87,7 +87,7 @@ export default {
       filters: {
         includeReplies: false,
         oneCommentForAuthor: false,
-        onlySAMPNicknames: false
+        onlyRolePlayNicknames: false
       },
       sortSettings: {
         key: null,
@@ -147,7 +147,7 @@ export default {
       let end = start + this.itemsPerPage
       return this.filteredData.slice(start, end)
     },
-    
+
     filteredData() {
       let filteredArray = JSON.parse(JSON.stringify(this.$store.state.comments.fetched_data))
 
@@ -177,22 +177,22 @@ export default {
       Object.values(filteredArray).map(item => {
         if (item.comments) item.comments.forEach(comment => {
           tempArr.push(comment)
-        })  
+        })
         if (item.replies) item.replies.forEach(reply => {
           tempArr.push(reply)
-        })  
+        })
       })
 
       filteredArray = tempArr
- 
-      if (this.filters.onlySAMPNicknames) {
+
+      if (this.filters.onlyRolePlayNicknames) {
         filteredArray = filteredArray.filter(item => {
-          return includesSAMPNickname(item.textOriginal)
+          return includesRolePlayNickname(item.textOriginal)
         })
       }
 
       if (this.sortSettings.key) {
-        switch (this.sortSettings.key) {
+        switch(this.sortSettings.key) {
           case 'likes':
             if (this.sortSettings.type == 'top') filteredArray.sort((a,b) => b.likeCount - a.likeCount)
             else filteredArray.sort((a,b) => a.likeCount - b.likeCount)
@@ -203,19 +203,47 @@ export default {
             else filteredArray.sort((a,b) => new Date(a.publishedAt) - new Date(b.publishedAt))
             break;
 
+          case 'user':
+            if (this.sortSettings.type == 'top') filteredArray.sort((a,b) => compareByAlphabet(a,b,{from: 'start', key: 'authorDisplayName'}))
+            else filteredArray.sort((a,b) => compareByAlphabet(a,b,{from: 'end', key: 'authorDisplayName'}))
+            break;
+
+          case 'comment':
+            if (this.sortSettings.type == 'top') filteredArray.sort((a,b) => compareByAlphabet(a,b,{from: 'start', key: 'textOriginal'}))
+            else filteredArray.sort((a,b) => compareByAlphabet(a,b,{from: 'end', key: 'textOriginal'}))
+            break;
+
           default:
             break;
         }
       }
-      // filteredArray.sort((a,b) => b.likeCount - a.likeCount)
 
-      function includesSAMPNickname(str) {
+      function includesRolePlayNickname(str) {
         if (!str.includes('_')) return
 
         let arr = str.split('_')
         return [arr[0].slice(-2), arr[1].slice(0,2)].every(str => {
           return str.split('').every(char => char.toLowerCase() != char.toUpperCase())
         })
+      }
+
+      function compareByAlphabet(a, b, payload = {from: 'start'}) {
+        a = a[payload.key].toLowerCase()
+        b = b[payload.key].toLowerCase()
+
+        switch(payload.from) {
+          case 'start':
+            if (a > b) return 1
+            else if (a < b) return -1
+            else return 0
+            break
+
+          case 'end':
+            if (a < b) return 1
+            else if (a > b) return -1
+            else return 0
+            break
+        }
       }
 
       return filteredArray
@@ -389,8 +417,8 @@ export default {
     &:after {
       content: '';
       position: absolute;
-      width: 0; 
-      height: 0; 
+      width: 0;
+      height: 0;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       border-top: 5px solid rgb(189, 189, 189);

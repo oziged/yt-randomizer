@@ -54,7 +54,6 @@ export default {
       this.$store.commit('video/SHOW_VIDEO_BLOCK')
     },
 
-
     async fetchComments() {
       this.$store.dispatch('comments/fetchComments', {
         id: this.parseVideoId(this.videoURL)
@@ -117,7 +116,7 @@ export default {
       0%, 20%, 100% {
         opacity: 0;
       }
-      
+
       50%, 80% {
         opacity: 1;
       }
