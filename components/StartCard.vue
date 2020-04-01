@@ -69,7 +69,7 @@ export default {
         return
       }
 
-      if (this.parseVideoId(this.videoUrl) && this.videoData.commentCount > 50000) {
+      if (this.parseVideoId(this.videoUrl) && this.videoData.commentCount > 10000) {
         this.$notify({ group: 'app-alerts', type: 'error', title: 'Error message', text: 'Video has too many comments...' })
         return
       }

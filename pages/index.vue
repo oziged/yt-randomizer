@@ -79,7 +79,7 @@ export default {
 
   async mounted() {
     await this.watchImagesLoad()
-    if (performance.now < 1000) setTimeout(() => {this.appLoading = false}, 1000);
+    if (performance.now() < 2000) setTimeout(() => {this.appLoading = false}, 1000);
     else this.appLoading = false
   },
 }
