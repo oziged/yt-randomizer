@@ -54,3 +54,7 @@
   opacity: 0;
   transform: translateY(100px);
 }
+
+.pretty.p-switch .state label:after, .pretty.p-switch .state label:before {
+  transform: translateY(-1px) scale(.8);
+}

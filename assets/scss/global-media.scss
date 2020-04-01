@@ -2,4 +2,8 @@
   body {
     font-size: 14px;
   }
+
+  .pretty.p-switch .state label:after, .pretty.p-switch .state label:before {
+    transform: scale(.8);
+  }
 }
