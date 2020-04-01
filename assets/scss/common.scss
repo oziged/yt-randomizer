@@ -40,7 +40,7 @@
   background-color: #fff;
 }
 
-// VUE - TRANSITIONS 
+// VUE - TRANSITIONS
 
 .fade-down-enter-active, .fade-down-leave-active, .fade-enter-active, .fade-leave-active {
   transition: .5s;
@@ -53,10 +53,4 @@
 .fade-down-enter, .fade-down-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
   transform: translateY(100px);
-}
-
-// SOME FIXES OF PLUGINS CSS
-
-.pretty.p-switch .state label:after, .pretty.p-switch .state label:before {
-  transform: translate(0px,-1px) scale(.8);
 }

@@ -30,7 +30,7 @@ export default {
     StartCardInput,
     VideoCard
   },
-  
+
 
   data() {
     return {
@@ -52,7 +52,7 @@ export default {
       this.$store.commit('video/HIDE_VIDEO_BLOCK')
       await this.$store.dispatch('video/fetchVideo', {id: videoId})
       this.$store.commit('video/SHOW_VIDEO_BLOCK')
-    },  
+    },
 
     parseVideoId(link) {
       let dirtyId = link.split('?v=')[1]
@@ -72,12 +72,12 @@ export default {
 
 
   mounted() {
-    
+
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .container {
     height: 100%;
     display: flex;
@@ -95,9 +95,6 @@ export default {
         font-size: 1.3em;
         font-weight: 400;
         letter-spacing: 1.5px;
-      }
-      .video-url-input {
-        border-bottom: 2px solid black;
       }
       .get-comments-button {
         cursor: pointer;
@@ -138,14 +135,31 @@ export default {
       flex-direction: column;
       justify-content: center;
       .interact-block {
-        width: 50%;
+        width: 500px;
         text-align: center;
-        .input-container .label {
-          display: none;
+        .input-container {
+          .label {
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+          .video-url-input {
+            text-align: center;
+          }
+        }
+        .get-comments-button {
+          margin: 20px auto 0 auto;
         }
       }
       .video-block {
         display: none;
+      }
+    }
+  }
+
+  @media (max-width: 650px) {
+    .container {
+      .interact-block {
+        width: 90%;
       }
     }
   }

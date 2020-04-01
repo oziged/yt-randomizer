@@ -36,12 +36,11 @@ module.exports = {
       }
     },
   },
-  
+
   plugins: [
-    '~plugins/filters.js', 
-    '~plugins/modal.js', 
-    '~plugins/checkbox.js', 
-    '~plugins/window-size.js', 
+    '~plugins/modal.js',
+    '~plugins/checkbox.js',
+    '~plugins/window-size.js',
     { src: '~/plugins/notifications-server', mode: 'server' },
     { src: '~/plugins/notifications-client', mode: 'client' }
   ],
@@ -51,9 +50,12 @@ module.exports = {
     scss: [
       '~assets/main.scss',
     ]
-},
+  },
   env: {
     YT_API_KEY: 'AIzaSyAdDpRSjpgTkCVBrL2Sigqj-nWFeo5XSmk'
+  },
+  server: {
+    host: '0.0.0.0' // default: localhost
   }
 }
 

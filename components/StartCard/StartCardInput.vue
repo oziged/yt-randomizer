@@ -1,8 +1,8 @@
 <template>
   <div class="input-container">
-    <input 
-      type="text" 
-      class="video-url-input" 
+    <input
+      type="text"
+      class="video-url-input"
       @input="$emit('input', $event.target.value)"
       :value="value"
     >
@@ -39,7 +39,6 @@ export default {
         width: 100%;
       }
       &:focus ~ .label {
-        left: 100px;
         opacity: 0,
       }
     }
@@ -47,6 +46,7 @@ export default {
       position: absolute;
       left: 5px;
       top: 50%;
+      width: 100%;
       transform: translateY(-50%);
       transition: .5s ease-out;
       pointer-events: none;

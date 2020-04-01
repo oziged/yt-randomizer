@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <modal name="settings" width="400" height="auto">
+      <modal name="settings" :maxWidth="400" width="90%" height="auto" :adaptive="true">
         <div class="settings-content">
           <span class="title">Filters:</span>
           <FilterList :filters="filters"/>
@@ -26,7 +26,7 @@
         </div>
       </modal>
 
-      <modal name="winners" height="auto">
+      <modal name="winners" :maxWidth="400" width="90%" height="auto" :adaptive="true">
         <simplebar class="simplebar winners-content">
               <div class="winner-card" v-for="(item, index) in winnersList" :key="index">
                 <div class="username">{{ item.authorDisplayName }}</div>
@@ -45,7 +45,8 @@
           <div class="comment-item" v-for="(item) in paginatedData" :key="item.publishedAt + Math.random()">
             <div class="username">{{ item.authorDisplayName.length > 20 ? item.authorDisplayName.slice(0,20) + '...' : item.authorDisplayName }}</div>
             <div class="like-count">{{ item.likeCount }}</div>
-            <div class="comment-text">{{ item.textOriginal.slice(0,40) + '...' }}</div>
+            <div class="comment-text">{{ item.textOriginal }}</div>
+            <!-- <div class="comment-text">{{ item.textOriginal.slice(0,40) + '...' }}</div> -->
             <div class="comment-date">{{ new Date(item.publishedAt).toLocaleDateString() }}</div>
           </div>
         </div>
@@ -56,6 +57,7 @@
         :currentPage="currentPage"
         :itemsPerPage="itemsPerPage"
         :totalItems="filteredData.length"
+        :tempPagesCount="tempPagesCount"
         @changePage="currentPage = $event-1"
       />
 
@@ -146,6 +148,12 @@ export default {
       let start = this.currentPage * this.itemsPerPage
       let end = start + this.itemsPerPage
       return this.filteredData.slice(start, end)
+    },
+
+    tempPagesCount() {
+      if (this.windowWidth < 600) return 3
+
+      return 5
     },
 
     filteredData() {
@@ -277,10 +285,13 @@ export default {
       .pagination-block {
         position: absolute;
         width: 100%;
-        bottom: 10px;
-        display: flex;
+        padding: 10px 0;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        bottom: 0;
         justify-content: center;
         align-items: center;
+        background-color: white;
       }
       .comments-content {
         padding: 20px;
@@ -366,7 +377,6 @@ export default {
           text-align: center;
           color: white;
           font-family: Scada;
-          // text-transform: uppercase;
           box-shadow: 0 0 13px #a52c2c;
           background: linear-gradient(to right, #cb2d3e, #ef473a);
           &:last-child {
@@ -390,6 +400,10 @@ export default {
           padding: 10px 0;
           transition: .5s;
           border-bottom: 1px dashed rgba(0,0,0,.1);
+          .username, .like-count, .comment-date {
+            display: flex;
+            align-items: center;
+          }
           .username {
             width: 30%;
             padding-right: 20px;
@@ -399,7 +413,7 @@ export default {
           }
           .comment-text {
             width: 50%;
-            padding-right: 20px;
+            margin-right: 20px;
           }
           .comment-date {
             width: 10%;
@@ -437,5 +451,36 @@ export default {
   .sort-bottom:after {
     border-top: 5px solid rgb(78, 200, 129);
     transform: rotate(180deg);
+  }
+
+  @media (max-width: 800px) {
+    .container .content-wrapper {
+      .comments-nav {
+        .comment-headers {
+          .username, .like-count, .comment-date {
+            display: none;
+          }
+          .comment-text {
+            width: 100%;
+          }
+        }
+      }
+      .comments-list {
+        .comment-item {
+          .username, .like-count, .comment-date {
+            display: none;
+          }
+          .comment-text {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 400px) {
+    .container .content-wrapper .pagination-block {
+      font-size: .8em;
+    }
   }
 </style>
