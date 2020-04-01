@@ -11,8 +11,6 @@ export const getters = {
 
 export const mutations = {
   CHANGE_VISIBILITY(state, payload) {
-    console.log('here',payload)
-    console.log(payload.type + '_block')
     state[payload.type + '_block'] = payload.bool
   }
 }

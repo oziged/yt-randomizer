@@ -47,12 +47,15 @@ export default {
 
   methods: {
     async updateVideoBlock() {
+      if (this.videoUrl.length < 5) return
+
       let videoId = this.parseVideoId(this.videoUrl)
-      if (!videoId) return;
-      this.$store.commit('video/HIDE_VIDEO_BLOCK')
+      if (!videoId) {
+        this.$notify({ group: 'app-alerts', type: 'error', title: 'Error message', text: 'Incorrect video link' })
+        return
+      }
+
       await this.$store.dispatch('video/fetchVideo', {id: videoId})
-      this.$store.commit('video/SHOW_VIDEO_BLOCK')
-      console.log(this.videoData)
     },
 
     parseVideoId(link) {
@@ -61,7 +64,12 @@ export default {
     },
 
     async getComments() {
-      if (this.videoData.commentCount > 5000) {
+      if (!this.$store.state.video.exists) {
+        this.$notify({ group: 'app-alerts', type: 'error', title: 'Error message', text: 'Invalid video url...' })
+        return
+      }
+
+      if (this.parseVideoId(this.videoUrl) && this.videoData.commentCount > 50000) {
         this.$notify({ group: 'app-alerts', type: 'error', title: 'Error message', text: 'Video has too many comments...' })
         return
       }

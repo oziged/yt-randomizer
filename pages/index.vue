@@ -51,7 +51,6 @@ export default {
       await this.$store.dispatch('video/fetchVideo', {
         id: this.parseVideoId(this.videoURL)
       })
-      this.$store.commit('video/SHOW_VIDEO_BLOCK')
     },
 
     async fetchComments() {

@@ -2,7 +2,7 @@
   <div class="filter-list">
     <p-check class="p-switch p-fill" color="danger" v-model="filters.includeReplies">Include replies for comments</p-check>
     <p-check class="p-switch p-fill" color="danger" v-model="filters.oneCommentForAuthor">Allow only 1 comment for user</p-check>
-    <p-check class="p-switch p-fill" color="danger" v-model="filters.onlySAMPNicknames">Only Role Play nicknames</p-check>
+    <p-check class="p-switch p-fill" color="danger" v-model="filters.onlyRolePlayNicknames">Only Role Play nicknames</p-check>
   </div>
 </template>
 
