@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @click="$notify({ group: 'app-alerts', type: 'error', title: 'Error message', text: 'Video has too many comments...' })">
+  <div class="container">
     <div class="interact-block">
       <h1 class="title">
         Find Youtube Video, <br>
@@ -52,6 +52,7 @@ export default {
       this.$store.commit('video/HIDE_VIDEO_BLOCK')
       await this.$store.dispatch('video/fetchVideo', {id: videoId})
       this.$store.commit('video/SHOW_VIDEO_BLOCK')
+      console.log(this.videoData)
     },
 
     parseVideoId(link) {
@@ -60,6 +61,11 @@ export default {
     },
 
     async getComments() {
+      if (this.videoData.commentCount > 5000) {
+        this.$notify({ group: 'app-alerts', type: 'error', title: 'Error message', text: 'Video has too many comments...' })
+        return
+      }
+
       if (this.parseVideoId(this.videoUrl)) {
         this.$store.commit('visible/CHANGE_VISIBILITY', {type: 'start', bool: false})
         this.$store.dispatch('comments/fetchComments', {id: this.parseVideoId(this.videoUrl)})
